@@ -1,461 +1,2179 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 The Gang's Roast Page 🔥</title>
-<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: #0f0f0f;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  
-  /* ANIMATED BG */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: 
-      radial-gradient(ellipse at 20% 50%, rgba(255,107,157,0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, rgba(108,92,231,0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 80%, rgba(253,114,114,0.1) 0%, transparent 50%);
-    z-index: 0;
-    pointer-events: none;
-  }
-  
-  /* HEADER */
-  .header {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 50px 20px 30px;
-    background: linear-gradient(180deg, #1a0a2e 0%, transparent 100%);
-  }
-  .header-top {
-    font-family: 'Bangers', cursive;
-    font-size: clamp(2.5rem, 8vw, 6rem);
-    letter-spacing: 4px;
-    background: linear-gradient(135deg, #ff6b9d, #ffd93d, #6c5ce7, #fd7272);
-    background-size: 300%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradientShift 3s infinite alternate;
-    line-height: 1.1;
-    text-shadow: none;
-    filter: drop-shadow(0 0 20px rgba(255,107,157,0.5));
-  }
-  @keyframes gradientShift {
-    0% { background-position: 0%; }
-    100% { background-position: 100%; }
-  }
-  .header-sub {
-    margin-top: 12px;
-    font-size: clamp(1rem, 3vw, 1.4rem);
-    color: #aaa;
-    font-weight: 700;
-    letter-spacing: 2px;
-  }
-  .header-warning {
-    display: inline-block;
-    margin-top: 16px;
-    background: linear-gradient(135deg, #ff6b9d, #fd7272);
-    color: white;
-    padding: 8px 24px;
-    border-radius: 30px;
-    font-size: .9rem;
-    font-weight: 900;
-    letter-spacing: 1px;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,107,157,0.4); }
-    50% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(255,107,157,0); }
-  }
-  
-  /* FLOATING EMOJIS */
-  .floaters {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-  .floater {
-    position: absolute;
-    font-size: 2rem;
-    animation: floatUp linear infinite;
-    opacity: 0.15;
-  }
-  @keyframes floatUp {
-    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-    10% { opacity: 0.15; }
-    90% { opacity: 0.15; }
-    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-  }
-  
-  /* GRID */
-  .grid {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 30px;
-    padding: 40px 5vw 60px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  /* CARD */
-  .card {
-    background: #1a1a2e;
-    border-radius: 24px;
-    overflow: hidden;
-    border: 2px solid rgba(255,255,255,0.08);
-    transition: all 0.35s cubic-bezier(.4,0,.2,1);
-    position: relative;
-    cursor: pointer;
-  }
-  .card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, var(--c1), transparent 60%);
-    opacity: 0;
-    transition: opacity 0.3s;
-    z-index: 0;
-  }
-  .card:hover {
-    transform: translateY(-10px) rotate(-1deg);
-    border-color: var(--c1);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px var(--glow);
-  }
-  .card:hover::before { opacity: 0.08; }
-  
-  /* BADGE */
-  .badge {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: var(--c1);
-    color: white;
-    font-size: .7rem;
-    font-weight: 900;
-    padding: 5px 12px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-    z-index: 2;
-    animation: wiggle 2s infinite;
-  }
-  @keyframes wiggle {
-    0%, 100% { transform: rotate(-2deg); }
-    50% { transform: rotate(2deg); }
-  }
-  
-  /* PHOTO */
-  .photo-wrap {
-    position: relative;
-    height: 300px;
-    overflow: hidden;
-    background: #111;
-  }
-  .photo-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    transition: transform 0.5s;
-    filter: grayscale(20%);
-  }
-  .card:hover .photo-wrap img {
-    transform: scale(1.08);
-    filter: grayscale(0%);
-  }
-  .emoji-overlay {
-    position: absolute;
-    bottom: 10px;
-    left: 12px;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-    z-index: 2;
-  }
-  
-  /* CARD BODY */
-  .card-body {
-    padding: 22px;
-    position: relative;
-    z-index: 1;
-  }
-  .card-name {
-    font-family: 'Bangers', cursive;
-    font-size: 2.2rem;
-    letter-spacing: 2px;
-    color: var(--c1);
-    line-height: 1;
-    margin-bottom: 4px;
-    filter: drop-shadow(0 0 8px var(--glow));
-  }
-  .card-title {
-    font-size: .85rem;
-    font-weight: 900;
-    color: #888;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-  .roast-box {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-left: 3px solid var(--c1);
-    border-radius: 12px;
-    padding: 14px 16px;
-    color: #ddd;
-    font-size: .92rem;
-    line-height: 1.6;
-    font-weight: 700;
-    transition: background 0.3s;
-  }
-  .card:hover .roast-box {
-    background: rgba(255,255,255,0.07);
-  }
-  
-  /* ROAST METER */
-  .meter-wrap {
-    margin-top: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .meter-label {
-    font-size: .75rem;
-    color: #666;
-    font-weight: 900;
-    white-space: nowrap;
-  }
-  .meter-bar {
-    flex: 1;
-    height: 8px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .meter-fill {
-    height: 100%;
-    border-radius: 10px;
-    background: linear-gradient(90deg, var(--c1), #ffd93d);
-    width: 0%;
-    transition: width 1.5s cubic-bezier(.4,0,.2,1);
-  }
-  
-  /* FOOTER */
-  .footer {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 30px;
-    color: #444;
-    font-size: .85rem;
-    font-weight: 700;
-  }
-  .footer span { color: #ff6b9d; }
-  
-  /* CLICK EFFECT */
-  .boom {
-    position: fixed;
-    pointer-events: none;
-    font-size: 2rem;
-    animation: boomAnim 0.8s forwards;
-    z-index: 9999;
-  }
-  @keyframes boomAnim {
-    0% { transform: scale(0) rotate(0deg); opacity: 1; }
-    100% { transform: scale(3) rotate(180deg); opacity: 0; }
-  }
-  
-  /* TITLE BADGE */
-  .crown {
-    font-family: 'Bangers', cursive;
-    font-size: clamp(1rem, 3vw, 1.5rem);
-    color: #ffd93d;
-    text-align: center;
-    margin: 0 5vw 10px;
-    letter-spacing: 3px;
-    position: relative;
-    z-index: 1;
-  }
-  @media(max-width: 600px) {
-    .grid { grid-template-columns: 1fr; padding: 20px; gap: 20px; }
-    .photo-wrap { height: 280px; }
-  }
-</style>
-</head>
-<body>
 
-<div class="floaters" id="floaters"></div>
 
-<div class="header">
-  <div class="header-top">🔥 THE GANG 🔥<br>ROAST WALL</div>
-  <div class="header-sub">⚠️ No feelings were spared in this website ⚠️</div>
-  <div class="header-warning">💀 ARSD WALEE 💀</div>
-</div>
-<div class="crown">~ YE LOG MERE DOST HAIN, BHAGWAN MAAF KARE ~ 🙏😭</div>
+    <!DOCTYPE html>
 
-<div class="grid" id="grid"></div>
+    <html>
 
-<div class="footer">
-  Made with <span>💔 zero sympathy</span> by a savage friend &nbsp;|&nbsp;
-  <span>Dono taraf se sorry nahi</span> 😂
-</div>
+    <head><title>
+	ARSD College
+</title><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-<script>
-// The image paths exactly match the files you uploaded in the correct order
-const friends = [
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-    {
-        name: "Shivang",
-        title: "😎 Aura Farmer (Non-Chalant)",
-        caption: "Duniya jal rahi hai, isko koi fark nahi. Aura +INFINITY, JAM ME 5. 💀",
-        badge: "🌾 AURA KI KHETI",
-        color: "#6c5ce7",
-        emoji: "😎🧘‍♂️✨",
-        img: "WhatsApp Image 2026-05-11 at 7.38.36 PM.jpeg"
-    },
-  {
-        name: "Saket",
-        title: "💔 One-Sided Lover Boy",
-        caption: "Bhai ne propose kiya... khud ko. Still waiting for reply.😭 , Pahado pe chale bhai??",
-        badge: "🚨 HEARTBROKEN",
-        color: "#ff6b9d",
-        emoji: "💔😭🥀",
-        img: "WhatsApp Image 2026-05-11 at 6.23.48 PM.jpeg" 
-    },
-  {
-        name: "Divakar",
-        title: "🗣️ Bahoot Gyaan Deta",
-        caption: "Google bhi thak jaata hai, ye nahi thakta. Chup hone ka option hi nahi. 🤫",
-        badge: "📢 MUTE BUTTON NEEDED",
-        color: "#00b894",
-        emoji: "🗣️📢🤯",
-        img: "WhatsApp Image 2026-05-11 at 6.25.34 PM.jpeg"
-    },
- {
-        name: "Abhay",
-        title: "💸 10rs Worker",
-        caption: "Salary itni kam hai ki ATM bhi hans ke band ho jaata hai. 😂",
-        badge: "🪙 BROKE CHAMPION",
-        color: "#f39c12",
-        emoji: "💸🪙😅",
-        img: "WhatsApp Image 2026-05-11 at 6.25.09 PM.jpeg"
-    },
-    {
-        name: "Aaditya",
-        title: "🎬 Content Creator Guy",
-        caption: "Views: 4. Subscribers: Mummy aur Papa. Oscar dream alive. 🎥💀 , South ex momo khanee chale??",
-        badge: "📸 STRUGGLING CREATOR",
-        color: "#fd7272",
-        emoji: "🎬📱💀",
-        img: "WhatsApp Image 2026-05-11 at 6.24.38 PM.jpeg"
-    },
-    {
-        name: "Niranjan",
-        title: "😴 Professional Sleeper",
-        caption: "Bed is his true love. Gaming is his side hustle. Wakes up only to eat and Sleep Again. 🎮💤",
-        badge: "🦥 LAZY PRO MAX",
-        color: "#2ed573",
-        emoji: "😴🎮🛌",
-        img: "WhatsApp%20Image%202026-05-11%20at%207.14.02%20PM.jpeg"
-    },
-    {
-        name: "Pawan",
-        title: "🤷 Simple Ladka",
-        caption: "Merko likhna tha kuch special... but phir kuch yaad nhi aya. That's it. 😶",
-        badge: "🌫️ NOTHING TO SEE HERE",
-        color: "#74b9ff",
-        emoji: "🤷😶🌫️",
-        img: "WhatsApp Image 2026-05-11 at 6.26.11 PM.jpeg"
-    },
-  {
-        name: "Ankit", // Change this to your actual name if you want!
-        title: "👑 The Main Character",
-        caption: "Host of the roast. Too cool to be roasted, but actively judging everyone else on this list. 😎🔥",
-        badge: "✨ A Chill Guy👀",
-        color: "#ff4757",
-        emoji: "👑🥶🔥",
-        img: "WhatsApp%20Image%202026-05-11%20at%207.13.35%20PM.jpeg" 
-    }
-];
+<!-- Frontend CSS -->
+<link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lightgallery-bundle.min.css" />
 
-const roastLevels = [98, 75, 85, 99, 88, 45];
 
-function buildCards() {
-  const grid = document.getElementById('grid');
-  friends.forEach((f, i) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.style.setProperty('--c1', f.color);
-    card.style.setProperty('--glow', f.color + '66');
-    card.innerHTML = `
-      <span class="badge">${f.badge}</span>
-      <div class="photo-wrap">
-        <img src="${f.img}" alt="${f.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400/1a1a2e/ffffff?text=Image+Missing';">
-        <div class="emoji-overlay">${f.emoji}</div>
-      </div>
-      <div class="card-body">
-        <div class="card-name">${f.name}</div>
-        <div class="card-title">${f.title}</div>
-        <div class="roast-box">"${f.caption}"</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/plugins/thumbnail/lg-thumbnail.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/plugins/zoom/lg-zoom.min.js"></script>
+
         
-      </div>`;
-    card.addEventListener('click', (e) => spawnBoom(e, i));
-    grid.appendChild(card);
-  });
+     
+          <style>
+      /* CSS scoped entirely inside .arsd-redesign-wrapper to ensure no generic body styling interference */
+      .arsd-redesign-wrapper * {
+          box-sizing: border-box;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          margin: 0;
+          padding: 0;
+      }
 
-  // Animate meters after a delay
-  setTimeout(() => {
-    friends.forEach((_, i) => {
-      const el = document.getElementById('meter-' + i);
-      if (el) el.style.width = roastLevels[i] + '%';
+      .arsd-redesign-wrapper {
+          padding: 40px 20px;
+          background-color: #f8fafc;
+          width: 100%;
+      }
+
+          .arsd-redesign-wrapper .dashboard-grid {
+              max-width: 1200px;
+              margin: 0 auto;
+              display: grid;
+              grid-template-columns: 1.1fr 1.9fr;
+              gap: 30px;
+          }
+
+      @media (max-width: 992px) {
+          .arsd-redesign-wrapper .dashboard-grid {
+              grid-template-columns: 1fr;
+          }
+      }
+
+      /* Card Foundations */
+      .arsd-redesign-wrapper .dashboard-card {
+          background: #ffffff;
+          border-radius: 16px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+          border: 1px solid #eef2f6;
+          padding: 24px;
+          display: flex;
+          flex-direction: column;
+      }
+
+      .arsd-redesign-wrapper .card-header {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          margin-bottom: 24px;
+      }
+
+      .arsd-redesign-wrapper .header-title {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+      }
+
+          .arsd-redesign-wrapper .header-title h2 {
+              font-size: 1.35rem;
+              color: #1e293b;
+              font-weight: 700;
+          }
+
+      /* Tab Styles */
+      .arsd-redesign-wrapper .tab-group {
+          display: flex;
+          background: #f1f5f9;
+          padding: 4px;
+          border-radius: 8px;
+      }
+
+      .arsd-redesign-wrapper .tab-btn {
+          flex: 1;
+          border: none;
+          background: transparent;
+          padding: 8px 12px;
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: #64748b;
+          cursor: pointer;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+      }
+
+          .arsd-redesign-wrapper .tab-btn.active {
+              background: #7a1c1c; /* Institutional Crimson/Maroon flavor */
+              color: #ffffff;
+          }
+
+      /* Notice List Styles */
+      .arsd-redesign-wrapper .notice-list {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+      }
+
+      .arsd-redesign-wrapper .notice-item {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          padding: 12px;
+          border-radius: 10px;
+          text-decoration: none;
+          background: #ffffff;
+          border: 1px solid #f1f5f9;
+          transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+          .arsd-redesign-wrapper .notice-item:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 6px 15px rgba(122, 28, 28, 0.06);
+              border-color: #7a1c1c33;
+          }
+
+      .arsd-redesign-wrapper .date-badge {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background: #fef2f2;
+          border: 1px solid #fee2e2;
+          border-radius: 8px;
+          min-width: 65px;
+          height: 60px;
+      }
+
+          .arsd-redesign-wrapper .date-badge .day {
+              font-size: 1.2rem;
+              font-weight: 700;
+              color: #7a1c1c;
+          }
+
+          .arsd-redesign-wrapper .date-badge .month {
+              font-size: 0.7rem;
+              text-transform: uppercase;
+              color: #991b1b;
+              font-weight: 600;
+          }
+
+      .arsd-redesign-wrapper .notice-content {
+          flex: 1;
+      }
+
+          .arsd-redesign-wrapper .notice-content h3 {
+              font-size: 0.95rem;
+              color: #334155;
+              margin-bottom: 4px;
+              line-height: 1.35;
+          }
+
+          .arsd-redesign-wrapper .notice-content p {
+              font-size: 0.8rem;
+              color: #64748b;
+          }
+
+      .arsd-redesign-wrapper .arrow-link {
+          color: #94a3b8;
+          font-weight: bold;
+          transition: color 0.2s;
+      }
+
+      .arsd-redesign-wrapper .notice-item:hover .arrow-link {
+          color: #7a1c1c;
+      }
+
+      .arsd-redesign-wrapper .view-all-link {
+          display: block;
+          text-align: center;
+          margin-top: 20px;
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: #7a1c1c;
+          text-decoration: none;
+      }
+
+      /* Right Column Structures */
+      .arsd-redesign-wrapper .right-column-group {
+          display: flex;
+          flex-direction: column;
+          gap: 30px;
+      }
+
+      /* Academic Program Cards Grid */
+      .arsd-redesign-wrapper .program-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+      }
+
+      @media (max-width: 640px) {
+          .arsd-redesign-wrapper .program-grid {
+              grid-template-columns: 1fr;
+          }
+      }
+
+      .arsd-redesign-wrapper .program-card {
+          padding: 20px;
+          border-radius: 12px;
+          display: flex;
+          flex-direction: column;
+          transition: transform 0.2s;
+      }
+
+          .arsd-redesign-wrapper .program-card:hover {
+              transform: translateY(-4px);
+          }
+
+          .arsd-redesign-wrapper .program-card.ug {
+              background: #fff5f5;
+              border: 1px solid #ffe3e3;
+          }
+
+          .arsd-redesign-wrapper .program-card.pg {
+              background: #f0fdf4;
+              border: 1px solid #dcfce7;
+          }
+
+          .arsd-redesign-wrapper .program-card.addon {
+              background: #eff6ff;
+              border: 1px solid #dbeafe;
+          }
+
+      .arsd-redesign-wrapper .program-icon {
+          font-size: 1.6rem;
+          margin-bottom: 12px;
+      }
+
+      .arsd-redesign-wrapper .program-card h3 {
+          font-size: 1.1rem;
+          color: #1e293b;
+          margin-bottom: 8px;
+      }
+
+      .arsd-redesign-wrapper .program-card p {
+          font-size: 0.85rem;
+          color: #64748b;
+          line-height: 1.4;
+          margin-bottom: 16px;
+          flex: 1;
+      }
+
+      .arsd-redesign-wrapper .explore-btn {
+          font-size: 0.85rem;
+          font-weight: 600;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+      }
+
+      .arsd-redesign-wrapper .text-ug {
+          color: #991b1b;
+      }
+
+      .arsd-redesign-wrapper .text-pg {
+          color: #166534;
+      }
+
+      .arsd-redesign-wrapper .text-addon {
+          color: #1e40af;
+      }
+
+      /* Upcoming Events Strip Styling */
+      .arsd-redesign-wrapper .events-strip {
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+          padding: 20px 24px;
+      }
+
+      @media (max-width: 640px) {
+          .arsd-redesign-wrapper .events-strip {
+              flex-direction: column;
+              align-items: flex-start;
+          }
+      }
+
+      .arsd-redesign-wrapper .events-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          min-width: 180px;
+      }
+
+          .arsd-redesign-wrapper .events-header h3 {
+              font-size: 1.1rem;
+              color: #1e293b;
+          }
+
+      .arsd-redesign-wrapper .events-placeholder {
+          font-size: 0.9rem;
+          color: #64748b;
+          font-style: italic;
+          background: #f8fafc;
+          padding: 10px 16px;
+          border-radius: 8px;
+          width: 100%;
+      }
+  </style>
+
+    </head>
+
+    <body>
+        <form method="post" action="./" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMjEwNDQyMTMxM2Rk+XtmsPu67G+zPmYiN3jnoNmXzKVHHsW/0e2rIGLpgfg=" />
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="CA0B0334" />
+</div>
+                <div class="topbar">
+
+    <div class="container-fluid">
+
+        <div class="topbar-wrapper">
+
+            <div class="topbar-left">
+
+                <a href="#">
+                    <i class="fas fa-envelope"></i>
+                    principal@arsd.du.ac.in , principal.arsdcollege@gmail.com
+                </a>
+
+                <a href="#">
+                    <i class="fas fa-phone"></i>
+                    +91 11 24113436
+                </a>
+
+            </div>
+
+            <div class="topbar-right d-flex align-items-center">
+<a href="nirf.aspx">NIRF</a>
+                <div class="dropdown">
+        <a class="top-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+            NAAC
+        </a>
+        <ul class="dropdown-menu menu">
+            <li><a class="dropdown-item" href="naac_iiqa.aspx">IIQA</a></li>
+            <li><a class="dropdown-item" href="self_study_report.aspx">Self Study Report</a></li>
+            <li><a class="dropdown-item" href="naac_dvv.aspx">DVV</a></li>
+                <li><a class="dropdown-item" href="aqar_reports_naac.aspx">AQAR</a></li>
+
+        </ul>
+    </div>
+
+
+
+
+                <div class="dropdown">
+        <a class="top-link dropdown-toggle" href="iqac.aspx" data-bs-toggle="dropdown">
+            IQAC
+        </a>
+        <ul class="dropdown-menu menu">
+            <li><a class="dropdown-item" href="iqac_committee.aspx">IQAC Committee</a></li>
+            <li><a class="dropdown-item" href="minutes_of_meetings.aspx">Minutes of Meetings</a></li>
+    
+                <li><a class="dropdown-item" href="aqar_reports_iqac.aspx">AQAR</a></li>
+             <li><a class="dropdown-item" href="feedback_contact.aspx">Feedback & Contact</a></li>
+             <li><a class="dropdown-item" href="teachers_promotions.aspx">Teachers Promotions</a></li>
+             <li><a class="dropdown-item" href="strategic_plan_and_deployment.aspx">Strategic Plan</a></li>
+             <li><a class="dropdown-item" href="college_distinctiveness.aspx">College Distinctiveness</a></li>
+             <li><a class="dropdown-item" href="best_practices.aspx">Best Practices</a></li>
+             <li><a class="dropdown-item" href="pos_cos.aspx">POs & COs</a></li>
+             <li><a class="dropdown-item" href="annual-audited-accounts.aspx">Annual Audited Accounts</a></li>
+          
+
+        </ul>
+    </div>
+
+
+                
+                
+
+
+                            <div class="dropdown">
+    <a class="top-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+        STUDENTS
+    </a>
+
+    <ul class="dropdown-menu menu">
+
+        <li><a class="dropdown-item" href="https://arsdcollege.in/Internet/Index.aspx">Login</a></li>
+
+        <li><a class="dropdown-item" href="#">Fee Payment</a></li>
+
+        <li><a class="dropdown-item" href="principal_arsd_internship_scheme.aspx">
+            Internship Scheme
+        </a></li>
+
+        <li><a class="dropdown-item" href="lesson_plan.aspx">
+            Lesson Plan
+        </a></li>
+
+        <li><a class="dropdown-item" href="student_form.aspx">
+            Forms
+        </a></li>
+
+        <li><a class="dropdown-item" href="time_table.aspx">
+            TimeTable 2026
+        </a></li>
+
+        <li><a class="dropdown-item" href="#">
+            DUSU Election
+        </a></li>
+
+        <li><a class="dropdown-item" href="awards_and_scholarships.aspx">
+            Awards & Scholarships
+        </a></li>
+
+        <li><a class="dropdown-item" href="student_societies.aspx">
+            Student Societies
+        </a></li>
+
+        <li><a class="dropdown-item" href="#">
+            Feedback
+        </a></li>
+
+        <li><a class="dropdown-item" href="#">
+            Student Handbook
+        </a></li>
+
+        <li><a class="dropdown-item" href="grievance_redressal.aspx">
+            Grievance Redressal
+        </a></li>
+
+        <li><a class="dropdown-item" href="nodal_public_grievances_officer.aspx">
+            Nodal Public Grievances Officer
+        </a></li>
+
+        <li><a class="dropdown-item" href="anti_ragging_committee.aspx">
+            Anti-Ragging Committee
+        </a></li>
+
+        <li><a class="dropdown-item" href="internal_complaints_committee.aspx">
+            Internal Complaints Committee
+        </a></li>
+
+        <li><a class="dropdown-item" href="sc_st_obc_cell.aspx">
+            SC/ST/OBC Cell
+        </a></li>
+
+        <li><a class="dropdown-item" href="internal_assessment_monitoring_committee.aspx">
+            Internal Assessment Monitoring Committee
+        </a></li>
+
+        <li><a class="dropdown-item" href="#">
+            Help Desk
+        </a></li>
+
+    </ul>
+</div>
+
+
+                <div class="dropdown">
+    <a class="top-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+        FACULTY & STAFF
+    </a>
+
+    <ul class="dropdown-menu menu">
+
+        <li>
+            <a class="dropdown-item" href="#x">
+                Faculty Login
+            </a>
+        </li>
+
+        <li>
+            <a class="dropdown-item" href="#">
+                Employee Login
+            </a>
+        </li>
+
+        <li>
+            <a class="dropdown-item" href="faculty_forms.aspx">
+                Forms
+            </a>
+        </li>
+
+        <li>
+            <a class="dropdown-item" href="#">
+                Code of Professional Ethics
+            </a>
+        </li>
+
+        <li>
+            <a class="dropdown-item" href="faculty_ICC.aspx">
+                Internal Complaints Committee
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+                            <div class="dropdown">
+    <a class="top-link dropdown-toggle" href="iqac.aspx" data-bs-toggle="dropdown">
+        ALUMNI
+    </a>
+    <ul class="dropdown-menu menu">
+        <li><a class="dropdown-item" href="#">Alumni Association</a></li>
+        <li><a class="dropdown-item" href="#">Distinguished Alumni</a></li>
+
+            <li><a class="dropdown-item" href="#">Confluentia</a></li>
+         <li><a class="dropdown-item" href="#">Support Us</a></li>
+         <li><a class="dropdown-item" href="#">Feedback</a></li>
+        
+      
+
+    </ul>
+</div>
+
+
+               
+
+                <a href="#">English</a>
+
+                <span>|</span>
+
+                <a href="#">हिन्दी</a>
+
+                <a href="#">
+                    <i class="fas fa-search"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+         <!-- TOP BAR END -->
+
+
+<!-- HEADER START -->
+
+<header class="college-header">
+
+    <div class="container-fluid">
+
+        <div class="header-wrapper">
+
+            <!-- LOGO -->
+
+            <div class="college-logo-section">
+                <div class="">
+
+              <a href="Default.aspx"><img src="images/arsd_logo.jpg" alt="image"></a>  
+
+            </div>
+
+            <!-- TITLE -->
+
+            <div class="college-details">
+
+                <h3 class="hindi-title">
+                   आत्मा राम सनातन धर्म महाविद्यालय
+                </h3>
+
+                <h2 class="english-title">
+                    Atma Ram Sanatan Dharma College
+                </h2>
+
+                <div class="university-name">
+                    (दिल्ली विश्वविद्यालय) |
+                    (University of Delhi)
+                </div>
+
+            </div>
+            </div>
+
+            <!-- A++ -->
+
+           <div class="nccc-1">
+                <div class="">
+
+                <img src="storage/images/naac-a-plus.png" alt="image">
+              <p class="naac-1">3.77/4.0</p>
+            </div>
+
+            <!-- NIRF -->
+
+            <div class="rank-img">
+
+                <img src="storage/images/nirf-rank.png" alt="image">
+
+            </div>
+           </div>
+
+            <!-- DU LOGO -->
+
+           
+
+        </div>
+
+    </div>
+
+</header>
+
+<!-- HEADER END -->
+            <nav class="navbar navbar-expand-lg university-nav p-0">
+    <div class="container-fluid p-0">
+        <button class="navbar-toggler m-2 ms-auto text-white border-white" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"><i class="fas fa-bars text-white fs-4"></i></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav w-100 justify-content-center">
+                
+                <li class="nav-item active-home">
+                    <a class="nav-link text-center px-4" href="Default.aspx"><i class="fas fa-home"></i></a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle px-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        ABOUT
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="introducing_arsd.aspx">Introducing ARSD</a></li>
+                        <li><a class="dropdown-item" href="historical_perspective.aspx">Historical Perspective</a></li>
+                          <li><a class="dropdown-item" href="vision_and_mission.aspx">Vision and Mission</a></li>
+                        <li><a class="dropdown-item" href="shapers_of_destiny.aspx">Shapers of Destiny</a></li>
+                         <li><a class="dropdown-item" href="chairperson_message.aspx">Chairperson Message</a></li>
+                          <li><a class="dropdown-item" href="principal_message.aspx">Principal Welcome</a></li>
+                           <li><a class="dropdown-item" href="governing_body.aspx">Governing Body</a></li>
+                            <li><a class="dropdown-item" href="administration.aspx">Administration</a></li>
+                             <li><a class="dropdown-item" href="ORGANOGRAM.aspx">ORGANOGRAM</a></li>
+
+                              <li><a class="dropdown-item" href="staff_council.aspx">Staff Council</a></li>
+                              <li><a class="dropdown-item" href="committees.aspx">Committees</a></li>
+                              <li><a class="dropdown-item" href="sc_st_obc_grievances.aspx">SC-ST-OBC Grievances</a></li>
+                              <li><a class="dropdown-item" href="milestones_arsd.aspx">Milestones</a></li>
+                              <li><a class="dropdown-item" href="hall-of-fame.aspx">Hall Of Fame</a></li>
+                              <li><a class="dropdown-item" href="scholarships.aspx">Scholarship</a></li>
+                              
+                              
+                              
+                              
+
+
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle px-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        ACADEMICS
+                    </a>
+                    <ul class="dropdown-menu">
+                         <li><a class="dropdown-item" href="under_graduate_courses.aspx">Courses Offered</a></li>
+                          
+                        <li><a class="dropdown-item"  href="department.aspx">Departments</a></li>
+                        <li><a class="dropdown-item" href="UGCF-2022.aspx">NEP: UGCF 2022</a></li>
+                           <li><a class="dropdown-item" href="time_table_academics.aspx">Time Table</a></li>
+                            <li><a class="dropdown-item" href="academic_calendar.aspx">Academic Calendar</a></li>
+                             <li><a class="dropdown-item" href="E-Resources.aspx">E-resources</a></li>
+                              <li><a class="dropdown-item" href="internal_assessment.aspx">Internal Assessment</a></li>
+                                <li><a class="dropdown-item" href="https://exam.du.ac.in/exam/">Delhi University Examinations</a></li>
+                        
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle px-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        ADMISSIONS
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="admission.aspx">Latest News &#038; Updates</a></li>
+                        <li><a class="dropdown-item" href="ug_bulletin.aspx">Undergraduate 2026</a></li>
+                        <li><a class="dropdown-item" href="#">Postgraduate 2026</a></li>
+                         <li><a class="dropdown-item" href="#">COLLEGE PROSPECTUS 2026-2027 </a></li>
+                          <li><a class="dropdown-item" href="#">COMMITTEE 2026-2027</a></li>
+                           <li><a class="dropdown-item" href="#">FAQ's</a></li>
+                           
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle px-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        RESEARCH
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="research_excellence.aspx">Research Excellence</a></li>
+                            <li><a class="dropdown-item" href="research_star_college_scheme.aspx">Star College Scheme@ARSD</a></li>
+                            <li><a class="dropdown-item" href="research_conferences.aspx">Conferences@ARSD</a></li>
+
+                            <li><a class="dropdown-item" href="research_publication.aspx">Research Publications</a></li>
+
+                            <li><a class="dropdown-item" href="research_projects.aspx">Research Projects</a></li>
+
+                            <li><a class="dropdown-item" href="research_patent.aspx">Patents</a></li>
+
+                            <li><a class="dropdown-item" href="research_facilities.aspx">Research Facilities</a></li>
+
+                            <li><a class="dropdown-item" href="research_guide.aspx">Research Guide</a></li>
+
+                            <li><a class="dropdown-item" href="research_UG.aspx">Undergraduate Research Publication</a></li>
+                            
+                            <li><a class="dropdown-item" href="research_collaborations.aspx">Collaborations</a></li>
+
+                            <li><a class="dropdown-item" href="about_prabodh.aspx">PRABODH</a></li>
+
+                            <li><a class="dropdown-item" href="research_cif.aspx">Central Instrument Facility (CIF)</a></li>
+
+
+                       
+                    </ul>
+                </li>
+
+             
+
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="contact.aspx">CONTACT US</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+            
+         <main>
+        
+<section class="hero-section position-relative">
+
+    <div id="heroSlider"
+        class="carousel slide carousel-fade h-100"
+        data-bs-ride="carousel"
+        data-bs-interval="5000">
+
+        <div class="carousel-inner">
+
+            <!-- Slide 1 -->
+            <div class="carousel-item active">
+                <div class="slide-bg position-relative">
+                    <img src="storage/images/1.jpg"
+                        class="w-100 h-100 position-absolute top-0 start-0"
+                        style="object-fit: cover; z-index: -1;"
+                        alt="Banner">
+
+                    <div class="container-fluid h-100">
+                        <div class="row m-0 h-100 align-items-center px-3 px-md-5">
+                            <div class="col-lg-7 text-white">
+                                <h1 class="hero-title fw-bold text-uppercase">
+                                    Excellence in Education,<br>Values for Life
+                                </h1>
+
+                                <hr class="hero-divider">
+
+                                <p class="hero-desc">
+                                    Transforming lives through outstanding education,
+                                    research, innovation, and community engagement.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <div class="slide-bg position-relative">
+        <img src="storage/images/image_4fb29f.jpg"
+             class="w-100 h-100 position-absolute top-0 start-0"
+             style="object-fit: cover; z-index: -1;"
+             alt="Banner">
+                    <div class="container-fluid h-100">
+                        <div class="row m-0 h-100 align-items-center px-3 px-md-5">
+
+                            <div class="col-lg-7 text-white">
+                                <h1 class="hero-title fw-bold text-uppercase">
+                                    Innovation & Research
+                                </h1>
+
+                                <hr class="hero-divider">
+
+                                <p class="hero-desc">
+                                    Empowering students through creativity and excellence.
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-item">
+                <div class="slide-bg position-relative">
+        <img src="storage/images/image_4fb29f.jpg"
+             class="w-100 h-100 position-absolute top-0 start-0"
+             style="object-fit: cover; z-index: -1;"
+             alt="Banner">
+                    <div class="container-fluid h-100">
+                        <div class="row m-0 h-100 align-items-center px-3 px-md-5">
+
+                            <div class="col-lg-7 text-white">
+                                <h1 class="hero-title fw-bold text-uppercase">
+                                    Building Future Leaders
+                                </h1>
+
+                                <hr class="hero-divider">
+
+                                <p class="hero-desc">
+                                    A tradition of academic excellence and values.
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PREV BUTTON -->
+        <button class="carousel-control-prev hero-arrow-btn"
+            type="button"
+            data-bs-target="#heroSlider"
+            data-bs-slide="prev">
+
+            <span class="hero-arrow">
+                &#10094;
+            </span>
+
+        </button>
+
+        <!-- NEXT BUTTON -->
+        <button class="carousel-control-next hero-arrow-btn"
+            type="button"
+            data-bs-target="#heroSlider"
+            data-bs-slide="next">
+
+            <span class="hero-arrow">
+                &#10095;
+            </span>
+
+        </button>
+
+        <!-- Indicators -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="2"></button>
+        </div>
+
+    </div>
+
+</section>
+<section class="info-events-section py-2 bg-light">
+    <div class="container-fluid px-3 px-md-5">
+        <div class="row g-4">
+            <div class="arsd-redesign-wrapper">
+    <div class="dashboard-grid">
+  <div class="dashboard-card notice-board">
+    <div class="notice-card bg-white rounded-3 shadow-lg overflow-hidden">
+
+        <!-- Tabs Header -->
+        <div class="notice-header-tabs d-flex align-items-center bg-light p-2 gap-1">
+            <div class="notice-icon px-2 text-danger">
+                <span class="icon-bell">📢</span>
+            </div>
+
+            <ul class="nav nav-pills flex-grow-1" id="noticeTab" role="tablist">
+                 
+                <li class="nav-item flex-fill">
+                    <button class="nav-link active w-100"
+                        data-bs-toggle="tab"
+                        data-bs-target="#announcement"
+                        type="button">
+                        Announcement
+                    </button>
+                </li>
+
+                <li class="nav-item flex-fill">
+                    <button class="nav-link w-100"
+                        data-bs-toggle="tab"
+                        data-bs-target="#students"
+                        type="button">
+                        Students
+                    </button>
+                </li>
+
+                <li class="nav-item flex-fill">
+                    <button class="nav-link w-100"
+                        data-bs-toggle="tab"
+                        data-bs-target="#staff"
+                        type="button">
+                        Staff
+                    </button>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="tab-content notice-body-container">
+
+            <!-- Announcement Tab -->
+            <div class="tab-pane fade show active" id="announcement">
+
+                <div class="marquee-vertical-box">
+                    <div class="marquee-content">
+
+                        
+                        <div class="notice-item d-flex align-items-start gap-3">
+
+                            <div class="date-badge">
+    <span class="day">03</span>
+    <span class="month">Jul '26</span>
+</div>
+
+                            <div>
+                                <h6 class="notice-text mb-1">
+
+                                                                            <a href="uploads/Date-sheet-for-Extra-Credit-Course.pdf" target="_blank">
+                                            Date Sheet for extra credit course
+                                        </a>
+
+                                    
+                                </h6>
+
+                               
+                            </div>
+
+                        </div>
+
+                        
+                        <div class="notice-item d-flex align-items-start gap-3">
+
+                            <div class="date-badge">
+    <span class="day">03</span>
+    <span class="month">Jul '26</span>
+</div>
+
+                            <div>
+                                <h6 class="notice-text mb-1">
+
+                                                                            <a href="uploads/Date-sheet-for-Id-ul-Zuha-Bakrid1.pdf" target="_blank">
+                                           Date sheet for Id-Ul-Zuha Bakrid
+                                        </a>
+
+                                    
+                                </h6>
+
+                               
+                            </div>
+
+                        </div>
+
+                        
+                        <div class="notice-item d-flex align-items-start gap-3">
+
+                            <div class="date-badge">
+    <span class="day">19</span>
+    <span class="month">June '26</span>
+</div>
+
+                            <div>
+                                <h6 class="notice-text mb-1">
+
+                                                                            <a href="uploads/सूचना-अंतर्राष्ट्रीय-योग-दिवस-2026.pdf" target="_blank">
+                                            Yoga Day Celebration 2026
+                                        </a>
+
+                                    
+                                </h6>
+
+                                
+                            </div>
+
+                        </div>
+
+                        
+                    </div>
+                </div>
+
+               
+
+            </div>
+
+            <!-- Students Tab -->
+            <div class="tab-pane fade" id="students">
+
+                <div class="marquee-vertical-box">
+                    <div class="marquee-content">
+
+                        
+                      
+
+                        
+                    </div>
+                </div>
+
+               
+
+            </div>
+
+            <!-- Staff Tab -->
+            <div class="tab-pane fade" id="staff">
+
+                <div class="marquee-vertical-box">
+                    <div class="marquee-content">
+
+                        
+                      
+
+                        
+                      
+
+                        
+                    </div>
+                </div>
+
+               
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+            <div class="right-column-group">
+
+     <div class="dashboard-card programs-section">
+         <div class="card-header">
+             <div class="header-title">
+                 <span class="icon-grad">🎓</span>
+                 <h2>Courses</h2>
+             </div>
+         </div>
+
+         <div class="program-grid">
+             <div class="program-card ug">
+
+                 <div class="program-icon">📚</div>
+                 <h3>Undergraduate</h3>
+                 <p>Explore elite standard BA, BSc, and BCom tracks.</p>
+                 <a href="under_graduate_courses.aspx" class="explore-btn text-ug">Explore Courses >>></a>
+             </div>
+
+             <div class="program-card pg">
+                 <div class="program-icon">🔬</div>
+                 <h3>Postgraduate</h3>
+                 <p>Advanced master specializations and research entryways.</p>
+                 <a href="#" class="explore-btn text-pg">Explore Courses</a>
+             </div>
+
+             <div class="program-card addon">
+                 <div class="program-icon">💡</div>
+                 <h3>Add-On Courses</h3>
+                 <p>Skill-centric certifications to edge out competition.</p>
+                 <a href="#" class="explore-btn text-addon">Explore Research</a>
+             </div>
+         </div>
+     </div>
+
+     <div class="dashboard-card events-strip">
+         <div class="events-header">
+             <span class="icon-calendar">📅</span>
+             <h3>Upcoming Events</h3>
+         </div>
+         <div class="events-placeholder">
+             <p>No major events scheduled for this week. Check back later for updates!</p>
+         </div>
+     </div>
+
+ </div>
+        </div>
+                </div>
+        </div>
+    </div>
+</section>
+
+<section class="about-info py-2">
+    <div class="container-fluid px-3 px-md-5">
+        <div class="row g-4">
+
+        <div class="col-lg-6">
+            <div class="custom-card-1">
+                <div class="principal-header">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-feather-pointed"></i>
+                    </div>
+                    <h3>PRINCIPAL'S DESK</h3>
+                </div>
+                
+                <div class="row align-items-center card-left-wrapper">
+                    <div class="col-md-5 mb-3 mb-md-0">
+                        <div class="profile-container">
+                            <div class="profile-inner">
+                                <img src="storage/images/principal.png" alt="Prof. Haritma Chopra">
+                                <div class="profile-info">
+                                    <h5>Prof. Gyantosh Kumar Jha.</h5>
+                                    <p>Principal</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="quote-mark">“</div>
+                        <p class="card-text">
+                           A heartfelt welcome to all our students, staff, and the extended community visiting our website. Our institution prides itself on a legacy of excellence in education, holistic development, and innovation, making it a vibrant place for learners from diverse backgrounds.
+
+The College holds the distinction of being accredited with an A++ NAAC grade with a score of 3.77, the highest to date. The College has also attained All India 7th Rank in the NIRF rankings. These accomplishments testify to our commitment to excellence in every aspect of our institution.
+                        </p>
+                        <div class="gold-divider"></div>
+                       <a href="principal_message.aspx" class="btn btn-blue"> READ MORE &nbsp;<i class="fa-solid fa-arrow-right-long"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="custom-card-1" style="background-color: #fffbfb;">
+                <div class="row h-100">
+                    <div class="col-md-7  flex-column justify-content-between">
+                        <div>
+                            <div class="about-header">
+                                <div class="about-icon">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+                                <h3>ABOUT COLLEGE</h3>
+                            </div>
+                            
+                            <p class="card-text">
+                               Atma Ram Sanatan Dharma College, ranked 7th All India by the NIRF and accredited A++ by the NAAC with the highest score of 3.77, is a premier educational institution at the University of Delhi that aims to nurture excellence in education in a supportive and inclusive environment.
+
+ARSD College Campus
+
+                            </p>
+                            <p class="card-text mt-3">
+                                It emphasises fostering quality human resources and promoting productive ideas that benefit the students. Since its inception, the College has focused on character-building and idealism inspired by Sanatan values.
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                           <a href="introducing_arsd.aspx" class="btn btn-maroon"> READ MORE &nbsp;<i class="fa-solid fa-arrow-right-long"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-5">
+                        <div class="image-side-container">
+                            <div class="diagonal-border-line"></div>
+                            <div class="diagonal-img-wrapper">
+                                <img src="storage/images/1.jpg" alt="Maitreyi College">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</section>
+<section class="college-news-grid-section py-5 bg-white">
+    <div class="container-fluid px-md-5">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+            <h2 class="news-main-title text-uppercase fw-bold m-0">Our College News</h2>
+            <a href="#" class="view-more-news-link fw-semibold">More College News <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+        
+        <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+            
+            <div class="col">
+                <div class="news-card-wrapper h-100">
+                    <div class="news-image-container">
+                      
+                        <img src="storage/images/image-1.jpg" alt="Hindi Debating Society" class="img-fluid w-100">
+                    </div>
+                    <div class="news-content-body pt-3">
+                        <h5 class="news-card-title fw-bold">3rd International Conference on “Recent Advances in Functional Materials (RAFM-2026)”</h5>
+                        <p class="news-sub-institution text-muted small mb-2">
+
+                            3rd International Conference on “Recent Advances in Functional Materials (RAFM-2026)”...
+                        </p>
+                        <div class="news-date-footer text-secondary small">
+                            <i class="far fa-calendar-alt me-1"></i> Apr 06, 2025
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="news-card-wrapper h-100">
+                    <div class="news-image-container">
+                        <img src="storage/images/image-2.jpg" alt="NCC Award" class="img-fluid w-100">
+                    </div>
+                    <div class="news-content-body pt-3">
+                        <h5 class="news-card-title fw-bold">Alumni Meet 2026-CONFLUENTIA</h5>
+                        <p class="news-short-desc text-secondary small mb-2">
+
+                            Dear ARSD Alumni Kindly register yourself for the upcoming Alumni Meet 2026- CONFLUENTIA...
+                        </p>
+                        <div class="news-date-footer text-secondary small">
+                            <i class="far fa-calendar-alt me-1"></i> Feb 14, 2025
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="news-card-wrapper h-100">
+                    <div class="news-image-container">
+                        <img src="storage/images/image-3.jpg" alt="CDS Rank" class="img-fluid w-100">
+                    </div>
+                    <div class="news-content-body pt-3">
+                        <h5 class="news-card-title fw-bold">गुरु पूर्णिमा समारोह - आत्माराम सनातन धर्म महाविद्यालय (ARSD College), दिल्ली विश्वविद्यालय</h5>
+                        <p class="news-short-desc text-secondary small mb-2">प्रेस विज्ञप्ति गुरु पूर्णिमा...</p>
+                        <div class="news-date-footer text-secondary small">
+                            <i class="far fa-calendar-alt me-1"></i> Oct 22, 2024
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="news-card-wrapper h-100">
+                    <div class="news-image-container">
+                        <img src="storage/images/image-4.jpg" alt="Excellence Award" class="img-fluid w-100">
+                    </div>
+                    <div class="news-content-body pt-3">
+                        <h5 class="news-card-title fw-bold">राष्ट्र-प्रथम की भावना के साथ प्रतिबद्धता का आह्वान</h5>
+                        <!-- <p class="news-short-desc text-secondary small mb-2">Congratulations to Dr. Anjali Sharma Kaushik for receiving Excellence Award for Teacher...</p> -->
+                        <div class="news-date-footer text-secondary small">
+                            <i class="far fa-calendar-alt me-1"></i> Oct 24, 2024
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="campus-highlights-area py-5">
+
+    <div class="container">
+
+        <div class="row g-4 text-center">
+
+            <div class="col-lg-2 col-md-4 col-6">
+                <a href="#" class="highlight-item">
+                    <i class="fas fa-building"></i>
+                    <h6>Facilities</h6>
+                </a>
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6">
+                <a href="#" class="highlight-item">
+                    <i class="fas fa-book-open"></i>
+                    <h6>Library</h6>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-6">
+                <a href="#" class="highlight-item">
+                    <i class="fas fa-money-bill-trend-up"></i>
+                    <h6>Technology Business Incubator</h6>
+                </a>
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6">
+                <a href="#" class="highlight-item">
+                    <i class="fas fa-ranking-star"></i>
+                    <h6>DBT Star College</h6>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-6">
+                <a href="#" class="highlight-item">
+                    <i class="fas fa-user-tie"></i>
+                    <h6>Placements</h6>
+                </a>
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6">
+                <a href="#" class="highlight-item">
+                    <i class="fas fa-table-tennis-paddle-ball"></i>
+                    <h6>Sports</h6>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-6">
+                <a href="#" class="highlight-item">
+                    <i class="fas fa-hands-holding-child"></i>
+                    <h6>National Service Scheme</h6>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-6">
+                <a href="#" class="highlight-item">
+                    <i class="fas fa-people-roof"></i>
+                    <h6>Unnat Bharat Abhiyan</h6>
+                </a>
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6">
+                <a href="#" class="highlight-item">
+                    <i class="fas fa-people-carry-box"></i>
+                    <h6>Vidya Vistar</h6>
+                </a>
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6">
+                <a href="#" class="highlight-item">
+                    <i class="fas fa-microphone"></i>
+                    <h6>ARSD Speaks</h6>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- <section class="college-news-grid-section py-5 bg-white">
+    <div class="container-fluid px-md-5">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+            <h2 class="news-main-title text-uppercase fw-bold m-0">Our College News</h2>
+            
+            <a href="#" class="view-more-news-link fw-semibold">More College News <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+        
+        <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+                        <div class="col">
+                <div class="news-card-wrapper h-100">
+                    <div class="news-image-container">
+                        <img src="storage/news/1781781752_34_1-6faS9vY3L-LaDrivX6aP4ZWlx5FXEf_f7hMpZlMK5heobVULCYDg3aa69dvpMUOnugj6JceQZionwsXORlSJ07-hCJltIyCNLoaTZG6ofxPbR9nJEV2taqdWE5l_P-EB_LvvC464zerB0ieobPrEgbhNtyi4Xb3rkFe_edMhcsbq8NR89_6XVrda64sbGdFL.jpg" alt="fsdfsf" class="img-fluid w-100">                        
+                    </div>
+                    <div class="news-content-body pt-3">
+                        <h5 class="news-card-title fw-bold">fsdfsf</h5>
+                        <p class="news-sub-institution text-muted small mb-2">
+                            &lt;p&gt;fsdf&lt;/p&gt;
+                        </p>
+                        <div class="news-date-footer text-secondary small">
+                            <i class="far fa-calendar-alt me-1"></i> 2026-06-20
+                        </div>
+                    </div>
+                </div>
+            </div>          
+                        <div class="col">
+                <div class="news-card-wrapper h-100">
+                    <div class="news-image-container">
+                        <img src="storage/news/image-2.jpg" alt="Admissions Open for Session 2026-27" class="img-fluid w-100">                        
+                    </div>
+                    <div class="news-content-body pt-3">
+                        <h5 class="news-card-title fw-bold">Admissions Open for Session 2026-27</h5>
+                        <p class="news-sub-institution text-muted small mb-2">
+                            Applications are invited for undergraduate and postgraduate courses for the academic session 2026-27.
+                        </p>
+                        <div class="news-date-footer text-secondary small">
+                            <i class="far fa-calendar-alt me-1"></i> 2026-06-18
+                        </div>
+                    </div>
+                </div>
+            </div>          
+                        <div class="col">
+                <div class="news-card-wrapper h-100">
+                    <div class="news-image-container">
+                        <img src="storage/news/image-3.jpg" alt="Research Grant Received" class="img-fluid w-100">                        
+                    </div>
+                    <div class="news-content-body pt-3">
+                        <h5 class="news-card-title fw-bold">Research Grant Received</h5>
+                        <p class="news-sub-institution text-muted small mb-2">
+                            The university has received a major research grant to promote innovation and interdisciplinary studies.
+                        </p>
+                        <div class="news-date-footer text-secondary small">
+                            <i class="far fa-calendar-alt me-1"></i> 2026-06-15
+                        </div>
+                    </div>
+                </div>
+            </div>          
+                        <div class="col">
+                <div class="news-card-wrapper h-100">
+                    <div class="news-image-container">
+                        <img src="storage/news/1781779939_33_3-SxdyZ96hhrzGT458-fL_1PPAL_5sSoQIjLoGFwTtOO_2NK-PWxjnun1-hRjOQ9mRscfYTHB072tPW2qZGk07b_dcoNW_SxQlVymChQEoRAmqSHWq3TJBy_4UO9BtfCCinxS6PfklwSvA_P0u3ZPDI4c6wh1eR7BxUPNhju-SuXM.jpg" alt="Campus Placement Drive" class="img-fluid w-100">                        
+                    </div>
+                    <div class="news-content-body pt-3">
+                        <h5 class="news-card-title fw-bold">Campus Placement Drive</h5>
+                        <p class="news-sub-institution text-muted small mb-2">
+                            &lt;p&gt;Leading companies will participate in the campus placement drive scheduled next month.&lt;/p&gt;
+                        </p>
+                        <div class="news-date-footer text-secondary small">
+                            <i class="far fa-calendar-alt me-1"></i> 2026-06-22
+                        </div>
+                    </div>
+                </div>
+            </div>          
+            
+        </div>
+    </div>
+</section> -->
+
+
+<!-- <section class="college-news-section py-5">
+    <div class="container-fluid px-3 px-md-5">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4 section-news-header">
+            <h3 class="fw-bold text-uppercase m-0 news-main-heading">Our College News</h3>
+            <a href="#" class="view-all-news fw-semibold text-dark text-decoration-none">
+                View All News <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            
+            <div class="col-lg-7 col-xl-6">
+                <div class="featured-news-card h-100 bg-white rounded-3 overflow-hidden d-flex flex-column justify-content-between">
+                    <div class="position-relative img-zoom-container">
+                        <img src="storage/images/news-main.jpg" class="w-100 featured-img" alt="ARSD College Achievement">
+                    </div>
+                    <div class="p-4 flex-grow-1 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <span class="badge badge-achievement text-uppercase">Achievement</span>
+                                <span class="news-date-text text-muted fw-medium"><i class="far fa-calendar-alt me-1"></i>13th Dec 2023</span>
+                            </div>
+                            <h4 class="featured-card-title fw-bold text-dark mb-2">
+                                ARSD COLLEGE ACHIEVES TOP RANKING IN NATIONAL SURVEY
+                            </h4>
+                            <p class="featured-card-desc text-secondary lh-base">
+                                Short engaging description summary to achievement strategity to support rager that to avoid event in national survey.
+                            </p>
+                        </div>
+                        <div class="">
+                            <a href="#" class="news-readmore-link fw-bold">Read More <i class="fas fa-chevron-right ms-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5 col-xl-6">
+                <div class="news-right-stack d-flex flex-column gap-3">
+                    
+                    <div class="small-news-card bg-white rounded-3 p-3 d-flex align-items-center gap-3">
+                        <div class="small-card-img-box flex-shrink-0">
+                            <img src="storage/images/news-main.jpg" alt="Symposium">
+                        </div>
+                        <div class="small-card-details">
+                            <h6 class="small-card-title fw-bold text-dark mb-1">SYMPOSIUM ON DIGITAL INDIA</h6>
+                            <span class="small-card-date text-muted"><i class="far fa-calendar-alt me-1"></i>23 June 2026</span>
+                        </div>
+                    </div>
+
+                    <div class="small-news-card bg-white rounded-3 p-3 d-flex align-items-center gap-3">
+                        <div class="small-card-img-box flex-shrink-0">
+                            <img src="storage/images/news-main.jpg" alt="Alumni Meet">
+                        </div>
+                        <div class="small-card-details">
+                            <h6 class="small-card-title fw-bold text-dark mb-1">ANNUAL ALUMNI MEET 2026</h6>
+                            <span class="small-card-date text-muted"><i class="far fa-calendar-alt me-1"></i>23 June 2026</span>
+                        </div>
+                    </div>
+
+                    <div class="small-news-card bg-white rounded-3 p-3 d-flex align-items-center gap-3">
+                        <div class="small-card-img-box flex-shrink-0">
+                            <img src="storage/images/news-main.jpg" alt="AI Ethics">
+                        </div>
+                        <div class="small-card-details">
+                            <h6 class="small-card-title fw-bold text-dark mb-1">WORKSHOP ON AI ETHICS</h6>
+                            <span class="small-card-date text-muted"><i class="far fa-calendar-alt me-1"></i>20 June 2026</span>
+                        </div>
+                    </div>
+
+                    <div class="small-news-card bg-white rounded-3 p-3 d-flex align-items-center gap-3">
+                        <div class="small-card-img-box flex-shrink-0">
+                            <img src="storage/images/news-main.jpg" alt="Research Grant">
+                        </div>
+                        <div class="small-card-details">
+                            <h6 class="small-card-title fw-bold text-dark mb-1">NEW RESEARCH GRANT AWARDED</h6>
+                            <span class="small-card-date text-muted"><i class="far fa-calendar-alt me-1"></i>28 June 2026</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section> -->
+
+
+
+<!-- <section class="quick-access-section py-5">
+    <div class="container-fluid px-3 px-md-5">
+        
+        <div class="mb-4 quick-access-header">
+            <h3 class="fw-bold m-0 text-dark heading-title-main">Quick Access</h3>
+            <p class="text-muted m-0 small-sub-title">Explore Important Resources & Services</p>
+        </div>
+
+        <div class="row g-4">
+            
+            <div class="col-xl-3 col-md-6 col-12">
+                <a href="#" class="quick-access-card d-flex flex-column align-items-center justify-content-center p-4 bg-white rounded-3">
+                    <div class="access-icon-box mb-3">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h5 class="access-card-label fw-bold m-0">Facilities</h5>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-6 col-12">
+                <a href="#" class="quick-access-card d-flex flex-column align-items-center justify-content-center p-4 bg-white rounded-3">
+                    <div class="access-icon-box mb-3">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <h5 class="access-card-label fw-bold m-0">Library</h5>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-6 col-12">
+                <a href="#" class="quick-access-card d-flex flex-column align-items-center justify-content-center p-4 bg-white rounded-3 text-center">
+                    <div class="access-icon-box mb-3">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h5 class="access-card-label fw-bold m-0">Technology Business Incubator</h5>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-6 col-12">
+                <a href="#" class="quick-access-card d-flex flex-column align-items-center justify-content-center p-4 bg-white rounded-3">
+                    <div class="access-icon-box mb-3">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h5 class="access-card-label fw-bold m-0">DBT Star College</h5>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-6 col-12">
+                <a href="#" class="quick-access-card active-highlight d-flex flex-column align-items-center justify-content-center p-4 bg-white rounded-3">
+                    <div class="access-icon-box mb-3">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h5 class="access-card-label fw-bold m-0">Placements</h5>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-6 col-12">
+                <a href="#" class="quick-access-card d-flex flex-column align-items-center justify-content-center p-4 bg-white rounded-3">
+                    <div class="access-icon-box mb-3">
+                        <i class="fas fa-table-tennis"></i>
+                    </div>
+                    <h5 class="access-card-label fw-bold m-0">Sports</h5>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-6 col-12">
+                <a href="#" class="quick-access-card d-flex flex-column align-items-center justify-content-center p-4 bg-white rounded-3">
+                    <div class="access-icon-box mb-3">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h5 class="access-card-label fw-bold m-0">National Service Scheme</h5>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-6 col-12">
+                <a href="#" class="quick-access-card d-flex flex-column align-items-center justify-content-center p-4 bg-white rounded-3">
+                    <div class="access-icon-box mb-3">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h5 class="access-card-label fw-bold m-0">Unnat Bharat Abhiyan</h5>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-6 col-12">
+                <a href="#" class="quick-access-card d-flex flex-column align-items-center justify-content-center p-4 bg-white rounded-3">
+                    <div class="access-icon-box mb-3">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h5 class="access-card-label fw-bold m-0">Vidya Vistar</h5>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section> -->
+
+
+
+
+
+<section class="college-excellence-section mt-5 bg-white">
+    <div class="container py-md-4">
+        <div class="row align-items-center g-5">
+            
+            <div class="col-lg-6 position-relative mb-5 mb-lg-0">
+                <div class="excellence-image-container position-relative">
+                    
+                    <div class="main-building-img-box rounded-1 overflow-hidden shadow-sm">
+                        <img src="storage/images/1.jpg" alt="ARSD College Building" class="w-100 img-fluid">
+                    </div>
+                    
+                    <div class="lawn-img-box rounded-1 overflow-hidden shadow">
+                        <img src="storage/images/2.jpg" alt="ARSD Campus Green Lawn" class="w-100 img-fluid">
+                    </div>
+                    
+                    <div class="rotating-badge-wrapper position-absolute translate-middle d-none d-sm-block">
+                        <div class="circular-badge-bg d-flex align-items-center justify-content-center text-center position-relative">
+                            <span class="badge-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                            <svg viewBox="0 0 100 100" class="badge-spinning-text">
+                                <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
+                                <text class="badge-text-fill">
+                                    <textPath href="#circlePath">Atma Ram Sanatan Dharma College * Estd. 1968 * </textPath>
+                                </text>
+                            </svg>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="excellence-content-wrapper ps-lg-4">
+                    
+                    <h2 class="excellence-main-title fw-normal mb-4">
+                        Excellence in Every Endeavor:<br>
+                        <strong>Our Unwavering Pledge</strong>
+                    </h2>
+                    
+                    <p class="excellence-description text-secondary mb-4">
+                        Accredited <strong>A++</strong> with a score of <strong>3.77</strong>, the highest to date by National Assessment and Accreditation Council (NAAC) All over India 5th position in NIRF (MoE) 2024 5th in placement in India Today rankings 2023 are not just accolades but reflections of our unwavering commitment to excellence, integrity, and student success
+                    </p>
+                    
+                    <div class="establishment-year-hollow mb-4">
+                        Estd. 1968
+                    </div>
+                    
+                    <div class="accreditation-link-box">
+                        <a href="#" class="text-decoration-none fw-semibold d-inline-flex align-items-center gap-2 accreditation-cta-btn">
+                            Accreditation & Rankings <i class="fas fa-arrow-up-right fs-6"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<section class="college-social-media-section py-5 bg-white">
+    <div class="container-fluid px-3 px-md-5">
+        
+        <div class="text-center mb-5">
+            <h2 class="social-section-title text-uppercase fw-bold m-0 d-inline-block position-relative">
+                SOCIAL MEDIA
+            </h2>
+           <div class="social-mini-icons d-flex justify-content-center align-items-center gap-3 mt-3">
+    <a href="https://x.com/arsdcollegedu" class="mini-icon icon-twitter"><i class="fab fa-twitter"></i></a>
+    <a href="https://www.instagram.com/_arsdcollege_?igsh=MTVscGV3Z204cGtoNg==" class="mini-icon icon-instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@arsdcollegeuniversityofdel4142?si=8ltT2SdiBh94JtuZ" class="mini-icon icon-youtube"><i class="fab fa-youtube"></i></a>
+<a href="https://www.linkedin.com/school/atma-ram-sanatan-dharma-college/" class="mini-icon" target="_blank">
+    <i class="fab fa-linkedin-in"></i>
+</a>
+<a href="https://www.facebook.com/share/1BgSTVqEyi/" class="mini-icon icon-facebook" target="_blank">
+<i class="fab fa-facebook-f"></i></a>
+
+
+
+
+</div>
+            <p class="social-subtitle text-secondary mt-3 mx-auto col-lg-6 small">
+                Stay connected with Hansraj College across our social media platforms for the latest updates, events and achievements.
+            </p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="social-feed-card twitter-card border rounded-3 overflow-hidden bg-white shadow-sm h-100 d-flex flex-column justify-content-between">
+                    <div class="p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="storage/images/college-logo.png" alt="Logo" class="rounded-circle" width="40" height="40">
+                                <div>
+                                    <h6 class="m-0 fw-bold small-title">Atma Ram Sanatan Dharma College<i class="fas fa-check-circle text-primary small"></i></h6>
+                                    <span class="text-muted extra-small d-block">@atmaduofficial</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <a href="#" class="btn btn-primary btn-sm rounded-pill px-3 fw-bold btn-extra-small">Follow</a>
+                                <i class="fab fa-twitter text-primary"></i>
+                            </div>
+                        </div>
+                        <p class="feed-text text-dark small mb-3">
+                           
+Atma Ram Sanatan Dharma College, University of Delhi, is committed to academic excellence, character building and holistic development. The college strives to create an environment that encourages learning, innovation and social responsibility.
+                        </p>
+                        <div class="feed-hashtags small mb-3">
+                            <a href="#" class="text-decoration-none text-primary me-1">#Atma Ram Sanatan Dharma College</a>
+                            <a href="#" class="text-decoration-none text-primary me-1">#75thFoundationDay</a>
+                            <a href="#" class="text-decoration-none text-primary me-1">#AmritVarsh</a>
+                            <a href="#" class="text-decoration-none text-primary me-1">#GoldenLegacy</a>
+                        </div>
+                        <!-- <div class="row g-1 rounded-2 overflow-hidden mb-3 twitter-images-grid">
+                            <div class="col-6"><img src="storage/images/1.jpg" alt="Event" class="w-100 object-fit-cover"></div>
+                            <div class="col-6"><img src="storage/images/2.jpg" alt="Event" class="w-100 object-fit-cover"></div>
+                            <div class="col-6 mt-1"><img src="storage/images/3.jpg" alt="Event" class="w-100 object-fit-cover"></div>
+                            <div class="col-6 mt-1"><img src="storage/images/4.jpg" alt="Event" class="w-100 object-fit-cover"></div>
+                        </div> -->
+                        <div class="d-flex justify-content-between align-items-center text-muted extra-small pt-2 border-top">
+                            <div class="d-flex gap-3">
+                                <span><i class="far fa-comment me-1"></i> 12</span>
+                                <span><i class="fas fa-retweet me-1"></i> 45</span>
+                                <span><i class="far fa-heart me-1"></i> 128</span>
+                            </div>
+                            <span>May 12, 2024</span>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-twitter-action text-white py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 rounded-0">
+                        <i class="fab fa-twitter"></i> View on Twitter <i class="fas fa-arrow-right ms-1 extra-small"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="social-feed-card instagram-card border rounded-3 overflow-hidden bg-white shadow-sm h-100 d-flex flex-column justify-content-between">
+                    <div class="p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="storage/images/college-logo.png" alt="Logo" class="rounded-circle" width="40" height="40">
+                                <div>
+                                    <h6 class="m-0 fw-bold small-title">atmacduofficial</h6>
+                                    <span class="text-muted extra-small d-block">9,285 followers</span>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-insta-follow btn-sm text-white px-3 fw-bold btn-extra-small">Follow</a>
+                        </div>
+                        <div class="insta-post-wrapper rounded-2 overflow-hidden mb-3 border">
+                            <img src="storage/images/3.jpg" alt="Instagram Post" class="w-100 img-fluid">
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center text-dark fs-5 mb-1">
+                            <div class="d-flex gap-3">
+                                <i class="far fa-heart cursor-pointer"></i>
+                                <i class="far fa-comment cursor-pointer"></i>
+                                <i class="far fa-paper-plane cursor-pointer"></i>
+                            </div>
+                            <i class="far fa-bookmark cursor-pointer"></i>
+                        </div>
+                        <div class="d-flex justify-content-center gap-1 mb-2">
+                            <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-instagram-action text-white py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 rounded-0">
+                        <i class="fab fa-instagram"></i> View on Instagram <i class="fas fa-arrow-right ms-1 extra-small"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="social-feed-card youtube-card border rounded-3 overflow-hidden bg-white shadow-sm h-100 d-flex flex-column justify-content-between">
+                    <div class="p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="storage/images/college-logo.png" alt="Logo" class="rounded-circle" width="40" height="40">
+                                <div>
+                                    <h6 class="m-0 fw-bold small-title">Atma Ram Sanatan Dharma College</h6>
+                                    <span class="text-muted extra-small d-block">2.13K subscribers</span>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-danger btn-sm rounded-1 px-3 fw-bold btn-extra-small">Subscribe</a>
+                        </div>
+                        <div class="youtube-video-thumb position-relative rounded-2 overflow-hidden mb-3">
+                            <img src="storage/images/1.jpg" alt="Video Thumbnail" class="w-100 object-fit-cover" style="height: 180px;">
+                            <div class="position-absolute top-50 start-50 translate-middle youtube-play-trigger">
+                                <i class="fab fa-youtube text-danger display-4"></i>
+                            </div>
+                        </div>
+                        <h6 class="video-title fw-bold text-dark mb-1 small">Turning Ideas into Impact</h6>
+                        <p class="video-desc text-secondary extra-small mb-3">
+                            Highlights from Innovation & Start-up Cell Interactive Session with Students.
+                        </p>
+                        <div class="d-flex justify-content-between text-muted extra-small pt-2 border-top">
+                            <span><i class="far fa-eye me-1"></i> 1.2K views • 2 weeks ago</span>
+                            <i class="fas fa-ellipsis-v"></i>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-youtube-action text-white py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 rounded-0">
+                        <i class="fab fa-youtube"></i> Watch on YouTube <i class="fas fa-arrow-right ms-1 extra-small"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+    <div class="social-feed-card linkedin-card border rounded-3 overflow-hidden bg-white shadow-sm h-100 d-flex flex-column justify-content-between">
+        <div class="p-3">
+            
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center gap-2">
+                    <img src="storage/images/college-logo.png" alt="Logo" class="rounded-circle" width="40" height="40">
+                    <div>
+                        <h6 class="m-0 fw-bold small-title">
+                            Atma Ram Sanatan Dharma College
+                            <i class="fab fa-linkedin text-primary small ms-1"></i>
+                        </h6>
+                        <span class="text-muted extra-small d-block">LinkedIn Official</span>
+                    </div>
+                </div>
+
+                <a href="#" class="btn btn-primary btn-sm rounded-pill px-3 fw-bold btn-extra-small">
+                    Follow
+                </a>
+            </div>
+
+            <p class="feed-text text-dark small mb-3">
+                Connect with us on LinkedIn for professional updates, placements, alumni success stories, internships and industry collaborations.
+            </p>
+
+            <div class="feed-hashtags small mb-3">
+                <a href="#" class="text-decoration-none text-primary me-1">#Placements</a>
+                <a href="#" class="text-decoration-none text-primary me-1">#Internships</a>
+                <a href="#" class="text-decoration-none text-primary me-1">#AlumniNetwork</a>
+                <a href="#" class="text-decoration-none text-primary me-1">#IndustryConnect</a>
+            </div>
+
+            <div class="linkedin-post-wrapper rounded-2 overflow-hidden mb-3 border p-3 bg-light">
+                <h6 class="fw-bold small mb-1">Campus Placement Drive 2024</h6>
+                <p class="extra-small text-muted mb-0">
+                    Leading companies visited campus for recruitment and internship opportunities.
+                </p>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center text-muted extra-small pt-2 border-top">
+                <div class="d-flex gap-3">
+                    <span><i class="far fa-thumbs-up me-1"></i> 210</span>
+                    <span><i class="far fa-comment me-1"></i> 34</span>
+                    <span><i class="fas fa-share me-1"></i> 18</span>
+                </div>
+                <span>June 2024</span>
+            </div>
+
+        </div>
+
+        <a href="#" class="btn btn-linkedin-action text-white py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 rounded-0">
+            <i class="fab fa-linkedin"></i> View on LinkedIn <i class="fas fa-arrow-right ms-1 extra-small"></i>
+        </a>
+    </div>
+</div>
+
+        </div>
+    </div>
+</section>
+
+<section class="testimonials-section voice-arsd-section py-5 position-relative overflow-hidden">
+    <div class="bg-overlay"></div>
+    <div class="bg-watermark-quote">“</div>
+
+       <div class="container-fluid px-3 px-md-5 position-relative z-2">
+        
+        <div class="text-center mb-5">
+            <span class="sub-headline text-uppercase fw-bold text-danger d-block mb-1 tracking-wide">Voice of ARSD</span>
+            <h2 class="main-headline fw-bold">What Our <span class="text-maroon">Alumni</span> Say</h2>
+            <div class="header-divider-line mx-auto my-3"></div>
+            <p class="section-lead-text text-muted mx-auto col-lg-6">
+                Our alumni are our pride. Hear from those who have been a part of ARSD College and are making a difference in their fields.
+            </p>
+        </div>
+
+        <div id="alumniTestimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+            
+            <div class="carousel-inner px-1 px-md-4">
+                
+                <div class="carousel-item active">
+                    <div class="row g-4 justify-content-center">
+                        
+                        <div class="col-xl-4 col-md-6">
+                            <div class="premium-alumni-card bg-white p-4 d-flex flex-column justify-content-between h-100">
+                                <div class="card-quote-accent text-maroon mb-2">“</div>
+                                <p class="alumni-speech-text text-secondary mb-4">
+                                  I started my theatre career from ARSD College in 2003 under the banner of Rangyan - The Dramatic Society of our college.  Under the convenership of Dr. Gyantosh Kumar Jha, presently the Principal of ARSD College, I was given a chance to play a lead role in the play titled 'Ek Tha Gadha'. From there onwards, I worked hard and overcame each and every obstacle to achieve success in my life. I think that hard work is the key to success. Being given a chance, I think some of us would like to relive our college days and I happen to be one of those. I am proud to be an ARSDian.
+                            <br />  <br /> <br /><br /><br /><br />
+                                    </p>
+                                <div class="card-footer-profile d-flex align-items-center gap-3 pt-3 border-top-dash">
+                                    <img src="Alumni/raj_alumni.jpg" alt="Raj Kumar Rao" class="profile-avatar img-fluid rounded-circle">
+                                    <div class="profile-details">
+                                        <h6 class="profile-name fw-bold mb-1 text-dark"><i class="far fa-user me-1 text-maroon"></i> Mr. Raj Kumar Rao
+
+</h6>
+                                        <span class="profile-tag small text-danger fw-semibold">National Award Winning Actor</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-6">
+                            <div class="premium-alumni-card bg-white p-4 d-flex flex-column justify-content-between h-100">
+                                <div class="card-quote-accent text-maroon mb-2">“</div>
+                                <p class="alumni-speech-text text-secondary mb-4">
+                                   My association with this esteemed institution is a matter of immense pride and gratitude. The years I spent at ARSD College were instrumental in shaping my outlook towards life, strengthening my values, and inspiring me to serve society with dedication and integrity. 
+The College’s commitment to quality education, research, innovation, cultural enrichment, sports, and community engagement reflects its vision of developing socially responsible, ethically grounded, and globally competent citizens. 
+To the students, I would like to say that your years in college are a unique opportunity to discover your potential, cultivate knowledge, develop leadership qualities, and build lasting relationships. The future belongs to those who combine knowledge with character and ambition with humility.
+
+                                </p>
+                                <div class="card-footer-profile d-flex align-items-center gap-3 pt-3 border-top-dash">
+                                    <img src="Alumni/AshishSood.jpg" alt="Shri Ashish Sood" class="profile-avatar img-fluid rounded-circle">
+                                    <div class="profile-details">
+                                        <h6 class="profile-name fw-bold mb-1 text-dark"><i class="far fa-user me-1 text-maroon"></i> Shri Ashish Sood</h6>
+                                        <span class="profile-tag small text-danger fw-semibold"> Hon’ble Minister<br /> Government of NCT of Delhi</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 d-none d-xl-flex">
+                            <div class="premium-alumni-card bg-white p-4 d-flex flex-column justify-content-between h-100 w-100">
+                                <div class="card-quote-accent text-maroon mb-2">“</div>
+                                <p class="alumni-speech-text text-secondary mb-4">
+                                    College days were filled with memories of fun- frolic, carefreeness, friends & long aimless discussions dotted with uncertainties of life. I was a science student who took up B.A. Political Science (Hons.), with no clue of the subject, but high on hopes as someone had guided me that this is the stepping stone to IAS. Thanks to our revered lecturers, each one was equally enthusiastic & eager to teach. I joined the Army after graduating. Life in the Army had been an adventurous journey. But it is indeed nostalgic to think of the wonderful college days at ARSDC. To conclude, I wish all the students a great inning in their college life.
+                                <br /><br /><br /><br /><br /> </p>
+                                <div class="card-footer-profile d-flex align-items-center gap-3 pt-3 border-top-dash">
+                                    <img src="Alumni/Talwar.jpg" alt="Major General" class="profile-avatar img-fluid rounded-circle">
+                                    <div class="profile-details">
+                                        <h6 class="profile-name fw-bold mb-1 text-dark"><i class="far fa-user me-1 text-maroon"></i> Major General G. S. Talwar</h6>
+                                        <span class="profile-tag small text-danger fw-semibold">Indian Armed Forces </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="row g-4 justify-content-center">
+                        
+                        <div class="col-xl-4 col-md-6">
+                            <div class="premium-alumni-card bg-white p-4 d-flex flex-column justify-content-between h-100">
+                                <div class="card-quote-accent text-maroon mb-2">“</div>
+                                <p class="alumni-speech-text text-secondary mb-4">
+                                   According to my personal experiences, I believe that a school plays a very important role in guiding a student in the right direction in his life. After completing my school, I took admission in the North Campus of Delhi University but at that my primary concern was to look for the college which was closer to my home. Keeping that in my mind, I took admission in ARSD College. This proved to be a turning point in my life. Whatever I am today, whichever role I am playing today in the politics of India, the credit for shaping that personality of mine goes to the ARSD College and its eminent professors. The atmosphere that I got in ARSD College also worked in promoting the political capabilities within me. Today, I have got an opportunity to share my experiences in this special issue for which I convey my sincere thanks to the ARSD College and its editorial committee.
+                                 
+                                <div class="card-footer-profile d-flex align-items-center gap-3 pt-3 border-top-dash">
+                                    <img src="Alumni/SatishUpadhyay.jpg" alt="Satish Upadhyay" class="profile-avatar img-fluid rounded-circle">
+                                    <div class="profile-details">
+                                        <h6 class="profile-name fw-bold mb-1 text-dark"><i class="far fa-user me-1 text-maroon"></i>Shree Satish Upadhyay</h6>
+                                        <span class="profile-tag small text-danger fw-semibold">MLA, New Delhi<br /> Bharatiya Janata Party (BJP)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                                             <div class="col-xl-4 col-md-6">
+                            <div class="premium-alumni-card bg-white p-4 d-flex flex-column justify-content-between h-100">
+                                <div class="card-quote-accent text-maroon mb-2">“</div>
+                                <p class="alumni-speech-text text-secondary mb-4">
+                                  I started my theatre career from ARSD College in 2003 under the banner of Rangyan - The Dramatic Society of our college.  Under the convenership of Dr. Gyantosh Kumar Jha, presently the Principal of ARSD College, I was given a chance to play a lead role in the play titled 'Ek Tha Gadha'. From there onwards, I worked hard and overcame each and every obstacle to achieve success in my life. I think that hard work is the key to success. Being given a chance, I think some of us would like to relive our college days and I happen to be one of those. I am proud to be an ARSDian.
+                                  <br /><br /><br /><br /><br /><br /><br /> </p>
+                                <div class="card-footer-profile d-flex align-items-center gap-3 pt-3 border-top-dash">
+                                    <img src="Alumni/raj_alumni.jpg" alt="Raj Kumar Rao" class="profile-avatar img-fluid rounded-circle">
+                                    <div class="profile-details">
+                                        <h6 class="profile-name fw-bold mb-1 text-dark"><i class="far fa-user me-1 text-maroon"></i> Mr. Raj Kumar Rao
+
+</h6>
+                                        <span class="profile-tag small text-danger fw-semibold">National Award Winning Actor</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-6">
+                            <div class="premium-alumni-card bg-white p-4 d-flex flex-column justify-content-between h-100">
+                                <div class="card-quote-accent text-maroon mb-2">“</div>
+                                <p class="alumni-speech-text text-secondary mb-4">
+                                   My association with this esteemed institution is a matter of immense pride and gratitude. The years I spent at ARSD College were instrumental in shaping my outlook towards life, strengthening my values, and inspiring me to serve society with dedication and integrity. 
+The College’s commitment to quality education, research, innovation, cultural enrichment, sports, and community engagement reflects its vision of developing socially responsible, ethically grounded, and globally competent citizens. 
+To the students, I would like to say that your years in college are a unique opportunity to discover your potential, cultivate knowledge, develop leadership qualities, and build lasting relationships. The future belongs to those who combine knowledge with character and ambition with humility.
+<br /><br />
+                                </p>
+                                <div class="card-footer-profile d-flex align-items-center gap-3 pt-3 border-top-dash">
+                                    <img src="Alumni/AshishSood.jpg" alt="Shri Ashish Sood" class="profile-avatar img-fluid rounded-circle">
+                                    <div class="profile-details">
+                                        <h6 class="profile-name fw-bold mb-1 text-dark"><i class="far fa-user me-1 text-maroon"></i> Shri Ashish Sood</h6>
+                                        <span class="profile-tag small text-danger fw-semibold"> Hon’ble Minister<br /> Government of NCT of Delhi</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="carousel-control-prev custom-voice-btn left" type="button" data-bs-target="#alumniTestimonialCarousel" data-bs-slide="prev">
+                <span class="arrow-icon-svg"><i class="fas fa-chevron-left"></i></span>
+            </button>
+            <button class="carousel-control-next custom-voice-btn right" type="button" data-bs-target="#alumniTestimonialCarousel" data-bs-slide="next">
+                <span class="arrow-icon-svg"><i class="fas fa-chevron-right"></i></span>
+            </button>
+
+            <div class="carousel-indicators voice-indicators mb-0 mt-4">
+                <button type="button" data-bs-target="#alumniTestimonialCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+                <button type="button" data-bs-target="#alumniTestimonialCarousel" data-bs-slide-to="1"></button>
+            </div>
+
+        </div>
+
+
+    </div>
+</section>
+
+
+
+
+
+
+
+<section class="gov-branding-bar bg-white py-4 border-bottom">
+    <div class="container">
+        <div class="row align-items-center justify-content-center g-4 text-center">
+            <div class="col-md-4 col-sm-6 col-12">
+                <img src="storage/images/azadi-logo.png" alt="आज़ादी का अमृत महोत्सव" class="img-fluid gov-logo-img">
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <img src="storage/images/g20-logo.png" alt="G20 India 2023" class="img-fluid gov-logo-img">
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <img src="storage/images/viksit-bharat.png" alt="विकसित भारत अभियान" class="img-fluid gov-logo-img">
+            </div>
+        </div>
+    </div>
+</section>
+    </main>
+
+    
+
+                <footer class="official-college-footer pt-5 pb-3 position-relative">
+    <div class="container-fluid px-3 px-md-5">
+        <div class="row g-4">
+            
+          
+
+           
+
+           
+
+            <div class="col-xl-2 col-lg-4 col-md-3 col-12">
+                <div class="footer-links-column">
+                    <h6 class="footer-col-headline text-uppercase fw-bold text-warning mb-3">Quick Links</h6>
+                    <ul class="list-unstyled links-stack-list">
+                        <li><a href="wellbeing.aspx">Well-Being</a></li>
+                       
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-xl-7 col-lg-4 col-md-3 col-12">
+                <div class="footer-links-column">
+                    <h6 class="footer-col-headline text-uppercase fw-bold text-warning mb-3">Google Map</h6>
+                   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.2780667457478!2d77.16464607546156!3d28.591433785945895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1d3cf842aa09%3A0x7c2d506edd36b06f!2sAtma%20Ram%20Sanatan%20Dharma%20College!5e0!3m2!1sen!2sin!4v1782389164975!5m2!1sen!2sin" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                </div>
+            </div>
+
+
+            <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                <div class="footer-links-column">
+                    <h6 class="footer-col-headline text-uppercase fw-bold text-warning mb-3">Contact Us</h6>
+                    <ul class="list-unstyled contact-details-stack">
+                        <li class="d-flex align-items-start gap-3 mb-3">
+                            <span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+                            <span class="contact-info-text">
+                                Atma Ram Sanatan Dharma College<br>(University of Delhi)<br>Dhaula Kuan, New Delhi - 110021
+                            </span>
+                        </li>
+                        <li class="d-flex align-items-center gap-3 mb-3">
+                            <span class="contact-icon"><i class="fas fa-phone-alt"></i></span>
+                            <a href="tel:+911124113436" class="contact-info-text text-decoration-none">+91 11 24113436, 24117508</a>
+                        </li>
+                        <li class="d-flex align-items-center gap-3">
+                            <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+                            <a href="mailto:principal@arsd.du.ac.in" class="contact-info-text text-decoration-none">principal@arsd.du.ac.in</a> 
+                              
+                           
+                        </li>
+
+                         <li class="d-flex align-items-center gap-3">
+                            <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+<a href="mailto:principal.arsdcollege@gmail.com" class="contact-info-text text-decoration-none">principal.arsdcollege@gmail.com</a>
+    
+ </li>
+
+                    
+                    </ul>
+                </div>
+                 <div class="footer-circular-socials d-flex gap-2">
+                        <a href="#" class="social-circle-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-circle-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-circle-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-circle-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+
+                    
+            </div>
+ <div class="col-md-12">
+
+    <div class="footer-bottom-menu text-center">
+
+      
+
+        <a href="rti.aspx">RTI</a>
+
+        <span>|</span>
+
+        <a href="roster.aspx">Roster</a>
+
+        <span>|</span>
+
+        <a href="career.aspx">Career</a>
+
+        <span>|</span>
+
+        
+        <a href="contact.aspx">Contact Us</a>
+
+    </div>
+
+</div>
+
+
+        </div>
+
+        <hr class="footer-divider-line mt-5 mb-3">
+
+        <div class="row align-items-center">
+            <div class="col-12 text-center position-relative">
+                <p class="copyright-text m-0 text-white-50">Copyright © 2026 ARSD College. All Rights Reserved.</p>
+                
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="scroll-to-top-btn position-absolute end-0 bottom-0 d-flex align-items-center justify-content-center" type="button">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</footer>
+<script>
+    lightGallery(document.getElementById('departmentGallery'), {
+        selector: 'a',
+        download: false,
+        counter: true,
+        thumbnail: true,
+        zoom: true
     });
-  }, 400);
-}
-
-function spawnBoom(e, i) {
-  const emojis = ['💀','😂','🔥','💸','🤣','👏','💥','😭'];
-  for(let j=0; j<5; j++) {
-    const el = document.createElement('div');
-    el.className = 'boom';
-    el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    el.style.left = (e.clientX + (Math.random()-0.5)*80) + 'px';
-    el.style.top = (e.clientY + (Math.random()-0.5)*80) + 'px';
-    el.style.animationDelay = (j*0.1) + 's';
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 900);
-  }
-}
-
-function buildFloaters() {
-  const emojis = ['💀','🔥','😂','💸','🤣','💔','😎','🎬','📢','🤷','🌾','💥'];
-  const container = document.getElementById('floaters');
-  for(let i=0; i<20; i++) {
-    const el = document.createElement('div');
-    el.className = 'floater';
-    el.textContent = emojis[i % emojis.length];
-    el.style.left = Math.random()*100 + 'vw';
-    el.style.animationDuration = (8 + Math.random()*12) + 's';
-    el.style.animationDelay = (-Math.random()*15) + 's';
-    el.style.fontSize = (1.5 + Math.random()*2) + 'rem';
-    container.appendChild(el);
-  }
-}
-
-buildCards();
-buildFloaters();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        </form>
 
-</body>
-</html>
+
+    </body>
+
+    </html>
+
+
